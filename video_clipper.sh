@@ -1,0 +1,11 @@
+python video_clipper.py \
+--static_or_exposure False \
+--interval_second 10 \
+--crop_range 2 \
+--target_range 4 \
+--exposure_type 2 \
+--resize_w 2560 \
+--resize_h 1440 \
+--checkpoint_path './SuperSloMo/SuperSloMo.ckpt' \
+--video_folder_path '/mnt/lustre/zhaoyuzhi/dataset/video_original' \
+--savepath '/mnt/lustre/zhaoyuzhi/dataset/video_processed' \

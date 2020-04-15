@@ -1,0 +1,14 @@
+python video2rgb.py \
+--crop_range 1 \
+--target_range 1 \
+--exposure_type 15 \
+--interval_second 5 \
+--short_cut_frames 2 \
+--long_cut_frames 8 \
+--resize_w 2560 \
+--resize_h 1440 \
+--only_gt False \
+--interp True \
+--checkpoint_path './SuperSloMo/SuperSloMo.ckpt' \
+--video_folder_path '/mnt/lustre/zhaoyuzhi/dataset/video_original' \
+--savepath '/mnt/lustre/zhaoyuzhi/dataset/frame_processed' \
