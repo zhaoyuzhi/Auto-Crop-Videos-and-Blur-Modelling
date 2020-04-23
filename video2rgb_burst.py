@@ -211,9 +211,10 @@ def process_videos(opt):
                             print('This is the %d-th video %d-th interval. Long exposure image is saved, average by %d times.' % (item + 1, i + 1, 2))
                         if j == 7:
                             # if short_exposure_img is averaged by many frames, the gt image should be saved additionally
+                            gtframe = cv2.resize(frame, (width, height))
                             imgname =  str(item) + '_' + str(i) + '_' + 'gt' + '.png'
                             imgpath = os.path.join(opt.savepath, imgname)
-                            cv2.imwrite(imgpath, frame)
+                            cv2.imwrite(imgpath, gtframe)
                             print('This is the %d-th interval. Ground truth image is saved.' % (i + 1))
                     for k in range(opt.short_cut_frames):
                         #frame = cv2.resize(frame, (width, height))
