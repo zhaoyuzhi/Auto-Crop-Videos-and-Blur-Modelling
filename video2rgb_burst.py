@@ -230,6 +230,69 @@ def process_videos(opt):
         vc.release()
         cv2.destroyAllWindows()
         print('Finished!')
+
+def process_videos_only_gt(opt):
+    videolist = get_files(opt.video_folder_path)#[6:]
+    print(videolist)
+    for item, videopath in enumerate(videolist):
+        if item >= 4:
+            opt.interval_second *= 2
+        # video statics
+        print('Now it is the %d-th video with name %s' % (item, videopath))
+        fps, frames, time, width, height = vfc.get_video_info(videopath)
+        fps = round(fps)
+        width = opt.resize_w
+        height = opt.resize_h
+        print("corrected video fps =", fps)
+        print("corrected video width =", width)
+        print("corrected video height =", height)
+        interval_frame_list = get_statics(opt, time, fps)
+
+        # create a video writer
+        print('Saving folder:', opt.savepath)
+        check_path(opt.savepath)
+        
+        # read and write
+        vc = cv2.VideoCapture(videopath)
+        # whether it is truely opened
+        if vc.isOpened():
+            rval, frame = vc.read()
+        else:
+            rval = False
+        print(rval)
+        # save frames
+        c = 1
+        while rval:
+            for i, interval in enumerate(interval_frame_list):
+                if c == interval - opt.short_cut_frames - opt.long_cut_frames:
+                    long_exposure_img = np.zeros((height, width, 3), dtype = np.float64)
+                    for j in range(opt.long_cut_frames):
+                        frame = cv2.resize(frame, (width, height))
+                        long_exposure_img = long_exposure_img + frame.copy().astype(np.float64)
+                        c = c + 1
+                        cv2.waitKey(1)
+                        rval, frame = vc.read()
+                        if j == 7:
+                            # if short_exposure_img is averaged by many frames, the gt image should be saved additionally
+                            gtframe = cv2.resize(frame, (width, height))
+                            imgname =  str(item) + '_' + str(i) + '_' + 'gt' + '.png'
+                            imgpath = os.path.join(opt.savepath, imgname)
+                            cv2.imwrite(imgpath, gtframe)
+                            print('This is the %d-th interval. Ground truth image is saved.' % (i + 1))
+                    for k in range(opt.short_cut_frames):
+                        #frame = cv2.resize(frame, (width, height))
+                        #short_exposure_img = short_exposure_img + frame.copy().astype(np.float64)
+                        #last_frame = frame
+                        c = c + 1
+                        cv2.waitKey(1)
+                        rval, frame = vc.read()
+            c = c + 1
+            cv2.waitKey(1)
+            rval, frame = vc.read()
+        # release the video
+        vc.release()
+        cv2.destroyAllWindows()
+        print('Finished!')
         
 if __name__ == "__main__":
 
@@ -266,4 +329,5 @@ if __name__ == "__main__":
     videolist = get_files(opt.video_folder_path)
 
     process_videos(opt)
+    #process_videos_only_gt(opt)
     
