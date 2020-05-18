@@ -35,3 +35,7 @@ It decomposes original video into many individual frames. The output includes sh
 - Averaged frame: Save short/long-exposure frames by averaging neighbouring frames
 
 - Interp frame: Save short/long-exposure frames by interpolating and averaging neighbouring frames
+
+## 4 Log files for type1-type9 video generation and ckpt model for SuperSloMo
+
+[Onedrive Link](https://portland-my.sharepoint.com/:f:/g/personal/yzzhao2-c_ad_cityu_edu_hk/EpEte0zzHt5IqQr01LINntEBrv2waXRwwBEjDtWns-gyeA?e=U9xw4t)
