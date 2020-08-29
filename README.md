@@ -16,7 +16,9 @@ The interpolation is based on CVPR 2018 paper [SuperSloMo](https://people.cs.uma
 
 - disparity_2frames.py: Compute disparity of 2 frames
 
-- video_get_statics.py: Display all information of videos in a folder
+- all.py: Crop video into many single frames and interpolate by SuperSloMo: long8, long6, long4, long2, long_last, interval_quarter, interval_half, interval_3quarter, short （RGB域deblur + denoising使用）
+
+- all_larger_size.py: Crop video into many single frames and interpolate by SuperSloMo: long8, long6, long4, long2, long_last, interval_quarter, interval_half, interval_3quarter, short （RGB域deblur + denoising使用，需要crop大size的时候）
 
 ## 2 Description of three versions in video_clipper
 
@@ -38,18 +40,6 @@ It decomposes original video into many individual frames. The output includes sh
 
 - Interp frame: Save short/long-exposure frames by interpolating and averaging neighbouring frames
 
-## 4 Description of three versions in other video2rgb files
+## 4 Description of video_resizer
 
-- video2rgb_burst.py: generate dense burst long exposure images 生成连续的长曝帧
-
-- video2rgb_mobile_application.py: generate long exposure frame and short exposure frame, and there is an interval between the two frames 生成长曝帧，经过一段间隔后，生成短曝帧
-
-## 5 Description of three versions in video fps change
-
-- video_change_fps.py: generate same video with specific fps 生成可以指定fps的相同video
-
-- video_slomo.py: generate interpolated video with specific fps and interp ratio 生成经过SuperSloMo插帧后的video，可以指定fps和插帧比例
-
-## 6 Log files for type1-type9 video generation and ckpt model for SuperSloMo
-
-[Onedrive Link](https://portland-my.sharepoint.com/:f:/g/personal/yzzhao2-c_ad_cityu_edu_hk/EpEte0zzHt5IqQr01LINntEBrv2waXRwwBEjDtWns-gyeA?e=U9xw4t)
+Read a video, and resize all frames, finally save them.
