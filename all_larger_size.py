@@ -248,7 +248,7 @@ def process_videos(opt):
                     long_last_exposure_img = np.zeros((height, width, 3), dtype = np.uint8)
                     imglist = []
                     for j in range(opt.long_cut_frames + opt.short_cut_frames):
-                        frame = cv2.resize(frame, (width, height))[:height//2, :width//2, :]
+                        frame = cv2.resize(frame, (width, height))
                         last_frame = frame
                         imglist.append(frame.copy().astype(np.float64))
                         c = c + 1
@@ -256,10 +256,29 @@ def process_videos(opt):
                         rval, frame = vc.read()
                         if frame is None:
                             frame = last_frame
-                        frame = cv2.resize(frame, (width, height))[:height//2, :width//2, :]
+                        frame = cv2.resize(frame, (width, height))
                         # seperate images [h, w, c]
-                        interp_frames = vslomo.save_inter_frames(last_frame, frame, opt, interp, flow, back_warp)
-                        for k, interp_frame in enumerate(interp_frames):
+                        last_frame1 = last_frame[:height//2, :width//2, :]
+                        last_frame2 = last_frame[height//2:height, :width//2, :]
+                        last_frame3 = last_frame[:height//2, width//2:width, :]
+                        last_frame4 = last_frame[height//2:height, width//2:width, :]
+                        frame1 = frame[:height//2, :width//2, :]
+                        frame2 = frame[height//2:height, :width//2, :]
+                        frame3 = frame[:height//2, width//2:width, :]
+                        frame4 = frame[height//2:height, width//2:width, :]
+                        # interpolate respectively
+                        interp_frames1 = vslomo.save_inter_frames(last_frame1, frame1, opt, interp, flow, back_warp)
+                        interp_frames2 = vslomo.save_inter_frames(last_frame2, frame2, opt, interp, flow, back_warp)
+                        interp_frames3 = vslomo.save_inter_frames(last_frame3, frame3, opt, interp, flow, back_warp)
+                        interp_frames4 = vslomo.save_inter_frames(last_frame4, frame4, opt, interp, flow, back_warp)
+                        for k in range(len(interp_frames1)):
+                            patch1 = interp_frames1[k]
+                            patch2 = interp_frames2[k]
+                            patch3 = interp_frames3[k]
+                            patch4 = interp_frames4[k]
+                            temp1 = np.concatenate((patch1, patch2), axis = 0)
+                            temp2 = np.concatenate((patch3, patch4), axis = 0)
+                            interp_frame = np.concatenate((temp1, temp2), axis = 1)
                             imglist.append(interp_frame.astype(np.float64))
                     # average
                     len_imglist = len(imglist) # 4 * 16 = 64
